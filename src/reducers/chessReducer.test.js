@@ -10,6 +10,16 @@ import { Map, List } from 'immutable';
 import { Players, ChessPiecesTypes } from '../helpers/constants';
 
 describe('chessReducer', () => {
+  describe('Noop', () => {
+    it('should return the initalState when a wrong action is passed', () => {
+      const action = {
+        type: 'Noop',
+        payload: {},
+      };
+      const actual = chessReducer(undefined, action);
+      expect(actual.toJS()).toEqual(initialState.toJS());
+    });
+  });
   describe('switchTurn', () => {
     it('should switch from WHITE to Black when switch turn', () => {
       const action = switchTurn();
@@ -17,6 +27,17 @@ describe('chessReducer', () => {
       const actual = chessReducer(initialState, action);
 
       const expected = 'BLACK';
+      expect(actual.get('turn')).toBe(expected);
+    });
+    it('should switch from BLACK to WHITE when switch turn', () => {
+      const action = switchTurn();
+      const pseudoInitialState = Map({
+        turn: Players.BLACK,
+        won: false,
+      });
+      const actual = chessReducer(pseudoInitialState, action);
+
+      const expected = 'WHITE';
       expect(actual.get('turn')).toBe(expected);
     });
   });
@@ -43,6 +64,44 @@ describe('chessReducer', () => {
             team: Players.BLACK,
             type: ChessPiecesTypes.QUEEN,
             position: [4, 2],
+          },
+        },
+      });
+    });
+    it('should change the first move property to false', () => {
+      const action = movePiece({ id: 'QUEEN', x: 4, y: 2 });
+      const pseudoInitialState = Map({
+        turn: Players.WHITE,
+        won: false,
+        pieces: Map({
+          QUEEN: Map({
+            team: Players.BLACK,
+            type: ChessPiecesTypes.QUEEN,
+            position: List([7, 0]),
+            firstMove: true,
+          }),
+          KING: Map({
+            team: Players.BLACK,
+            type: ChessPiecesTypes.KING,
+            position: List([1, 9]),
+          }),
+        }),
+      });
+      const actual = chessReducer(pseudoInitialState, action);
+      expect(actual.toJS()).toEqual({
+        turn: Players.WHITE,
+        won: false,
+        pieces: {
+          QUEEN: {
+            team: Players.BLACK,
+            type: ChessPiecesTypes.QUEEN,
+            position: [4, 2],
+            firstMove: false,
+          },
+          KING: {
+            team: Players.BLACK,
+            type: ChessPiecesTypes.KING,
+            position: [1, 9],
           },
         },
       });
@@ -110,11 +169,8 @@ describe('chessReducer', () => {
         },
       });
     });
-  });
-
-  describe('capturePiece', () => {
-    it('should delete the entry in the state', () => {
-      const action = capturePiece('QUEEN');
+    it('should capture a piece if moved upon', () => {
+      const action = movePiece({ id: 'QUEEN', x: 4, y: 2 });
       const pseudoInitialState = Map({
         turn: Players.WHITE,
         won: false,
@@ -124,55 +180,28 @@ describe('chessReducer', () => {
             type: ChessPiecesTypes.QUEEN,
             position: List([7, 0]),
           }),
-          KING: Map({
-            team: Players.BLACK,
-            type: ChessPiecesTypes.KING,
-            position: List([1, 9]),
+          BISHOP: Map({
+            team: Players.WHITE,
+            type: ChessPiecesTypes.BISHOP,
+            position: List([4, 2]),
           }),
         }),
       });
-
       const actual = chessReducer(pseudoInitialState, action);
       expect(actual.toJS()).toEqual({
         turn: Players.WHITE,
         won: false,
         pieces: {
-          KING: {
+          QUEEN: {
             team: Players.BLACK,
-            type: ChessPiecesTypes.KING,
-            position: [1, 9],
-          },
-        },
-      });
-    });
-    it('should not change the state if the id doesnt exist', () => {
-      const action = capturePiece('QUEEN');
-      const pseudoInitialState = Map({
-        turn: Players.WHITE,
-        won: false,
-        pieces: Map({
-          KING: Map({
-            team: Players.BLACK,
-            type: ChessPiecesTypes.KING,
-            position: List([1, 9]),
-          }),
-        }),
-      });
-
-      const actual = chessReducer(pseudoInitialState, action);
-      expect(actual.toJS()).toEqual({
-        turn: Players.WHITE,
-        won: false,
-        pieces: {
-          KING: {
-            team: Players.BLACK,
-            type: ChessPiecesTypes.KING,
-            position: [1, 9],
+            type: ChessPiecesTypes.QUEEN,
+            position: [4, 2],
           },
         },
       });
     });
   });
+
   describe('setWonGame', () => {
     it('should change the won property in the state', () => {
       const action = setWonGame();

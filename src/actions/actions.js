@@ -11,13 +11,6 @@ export function movePiece({ id, x, y }) {
   };
 }
 
-export function capturePiece(id) {
-  return {
-    type: ActionTypes.CAPTURE_PIECE,
-    payload: id,
-  };
-}
-
 export function switchTurn() {
   return {
     type: ActionTypes.SWITCH_TURN,
