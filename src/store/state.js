@@ -4,6 +4,8 @@ import { Players, ChessPiecesTypes } from '../helpers/constants';
 export const initialState = Map({
   turn: Players.WHITE,
   won: false,
+  selectedPiece: '',
+  currentLegalMoves: List([]),
   pieces: Map({
     BLACK_ROOK1: Map({
       team: Players.BLACK,
@@ -93,89 +95,89 @@ export const initialState = Map({
       position: List([6, 7]),
       firstMove: true,
     }),
-    LIGHT_ROOK1: Map({
+    WHITE_ROOK1: Map({
       team: Players.WHITE,
       type: ChessPiecesTypes.ROOK,
       position: List([0, 0]),
     }),
-    LIGHT_KNIGHT1: Map({
+    WHITE_KNIGHT1: Map({
       team: Players.WHITE,
       type: ChessPiecesTypes.KNIGHT,
       position: List([0, 1]),
     }),
-    LIGHT_BISHOP1: Map({
+    WHITE_BISHOP1: Map({
       team: Players.WHITE,
       type: ChessPiecesTypes.BISHOP,
       position: List([0, 2]),
     }),
-    LIGHT_QUEEN: Map({
+    WHITE_QUEEN: Map({
       team: Players.WHITE,
       type: ChessPiecesTypes.QUEEN,
       position: List([0, 3]),
     }),
-    LIGHT_KING: Map({
+    WHITE_KING: Map({
       team: Players.WHITE,
       type: ChessPiecesTypes.KING,
       position: List([0, 4]),
     }),
-    LIGHT_BISHOP2: Map({
+    WHITE_BISHOP2: Map({
       team: Players.WHITE,
       type: ChessPiecesTypes.BISHOP,
       position: List([0, 5]),
     }),
-    LIGHT_KNIGHT2: Map({
+    WHITE_KNIGHT2: Map({
       team: Players.WHITE,
       type: ChessPiecesTypes.KNIGHT,
       position: List([0, 6]),
     }),
-    LIGHT_ROOK2: Map({
+    WHITE_ROOK2: Map({
       team: Players.WHITE,
       type: ChessPiecesTypes.ROOK,
       position: List([0, 7]),
     }),
-    LIGHT_PAWN1: Map({
+    WHITE_PAWN1: Map({
       team: Players.WHITE,
       type: ChessPiecesTypes.PAWN,
       position: List([1, 0]),
       firstMove: true,
     }),
-    LIGHT_PAWN2: Map({
+    WHITE_PAWN2: Map({
       team: Players.WHITE,
       type: ChessPiecesTypes.PAWN,
       position: List([1, 1]),
       firstMove: true,
     }),
-    LIGHT_PAWN3: Map({
+    WHITE_PAWN3: Map({
       team: Players.WHITE,
       type: ChessPiecesTypes.PAWN,
       position: List([1, 2]),
       firstMove: true,
     }),
-    LIGHT_PAWN4: Map({
+    WHITE_PAWN4: Map({
       team: Players.WHITE,
       type: ChessPiecesTypes.PAWN,
       position: List([1, 3]),
       firstMove: true,
     }),
-    LIGHT_PAWN5: Map({
+    WHITE_PAWN5: Map({
       team: Players.WHITE,
       type: ChessPiecesTypes.PAWN,
       position: List([1, 4]),
       firstMove: true,
     }),
-    LIGHT_PAWN6: Map({
+    WHITE_PAWN6: Map({
       team: Players.WHITE,
       type: ChessPiecesTypes.PAWN,
       position: List([1, 5]),
       firstMove: true,
     }),
-    LIGHT_PAWN7: Map({
+    WHITE_PAWN7: Map({
       team: Players.WHITE,
       type: ChessPiecesTypes.PAWN,
       position: List([1, 6]),
       firstMove: true,
     }),
-    LIGHT_PAWN8: Map({
+    WHITE_PAWN8: Map({
       team: Players.WHITE,
       type: ChessPiecesTypes.PAWN,
       position: List([1, 7]),

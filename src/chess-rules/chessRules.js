@@ -12,6 +12,7 @@ import { ChessPiecesTypes, Players } from '../helpers/constants';
 import chessReducer from '../reducers/chessReducer';
 import { movePiece } from '../actions/actions';
 
+// return the possible moves for a piece
 export function getLegalMovesForAPiece(state, pieceId) {
   const piece = getPieceOnSquareById(state, pieceId);
   if (!piece) {
@@ -28,6 +29,8 @@ export function getLegalMovesForAPiece(state, pieceId) {
     return isKingChecked(nextState, piece.get('team'));
   });
 }
+
+// return the possible moves for a piece including the moves which would create a check or check mate situation
 export function getStandardMovesForAPiece(state, pieceId) {
   const piece = getPieceOnSquareById(state, pieceId);
   if (!piece) {
@@ -97,6 +100,7 @@ export function isKingChecked(state, team) {
   const ennemyPieces = state
     .get('pieces')
     .filter(statePiece => statePiece.get('team') !== team);
+
   return !!ennemyPieces.find((v, id) =>
     getStandardMovesForAPiece(state, id).find(legalMove =>
       king.get('position').equals(legalMove)

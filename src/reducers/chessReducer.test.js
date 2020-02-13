@@ -1,8 +1,9 @@
 import {
   switchTurn,
   movePiece,
-  capturePiece,
   setWonGame,
+  selectPiece,
+  unselectPiece,
 } from '../actions/actions';
 import chessReducer from './chessReducer';
 import { initialState } from '../store/state';
@@ -198,6 +199,35 @@ describe('chessReducer', () => {
             position: [4, 2],
           },
         },
+      });
+    });
+  });
+
+  describe('selectPiece', () => {
+    it('should select the id piece and update the currentLegalMoves accordingly', () => {
+      const action = selectPiece('WHITE_KNIGHT1');
+      const actual = chessReducer(initialState, action);
+      expect(actual.toJS()).toEqual({
+        ...initialState.toJS(),
+        selectedPiece: 'WHITE_KNIGHT1',
+        currentLegalMoves: [
+          [2, 2],
+          [2, 0],
+        ],
+      });
+    });
+  });
+  describe('unSelectPiece', () => {
+    it('should select the id piece and update the currentLegalMoves accordingly', () => {
+      const action = unselectPiece();
+      const pseudoInitialState = initialState
+        .set('selectedPiece', 'WHITE_KNIGHT1')
+        .set('currentLegalMoves', List(List([2, 2]), List([2, 0])));
+      const actual = chessReducer(pseudoInitialState, action);
+      expect(actual.toJS()).toEqual({
+        ...pseudoInitialState.toJS(),
+        selectedPiece: '',
+        currentLegalMoves: [],
       });
     });
   });

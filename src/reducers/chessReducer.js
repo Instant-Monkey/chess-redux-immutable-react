@@ -1,9 +1,9 @@
 import { initialState } from '../store/state';
 import ActionTypes from '../actions/types';
-import { Players } from '../helpers/constants';
 import { List } from 'immutable';
 import { getOppositeTeam } from '../helpers/helpers';
 import { getPieceIdOnSquareByPosition } from '../chess-rules/chessRulesHelpers';
+import { getLegalMovesForAPiece } from '../chess-rules/chessRules';
 
 function chessReducer(state = initialState, action) {
   switch (action.type) {
@@ -23,6 +23,17 @@ function chessReducer(state = initialState, action) {
         return nextState;
       }
       return state;
+    }
+    case ActionTypes.SELECT_PIECE: {
+      return state
+        .set('selectedPiece', action.payload)
+        .set(
+          'currentLegalMoves',
+          getLegalMovesForAPiece(state, action.payload)
+        );
+    }
+    case ActionTypes.UNSELECT_PIECE: {
+      return state.set('selectedPiece', '').set('currentLegalMoves', List([]));
     }
     case ActionTypes.SWITCH_TURN: {
       return state.update('turn', turn => getOppositeTeam(turn));
