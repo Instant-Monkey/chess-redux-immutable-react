@@ -4,6 +4,7 @@ const ActionTypes = {
   UNSELECT_PIECE: 'UNSELECT_PIECE',
   SWITCH_TURN: 'SWITCH_TURN',
   SET_WON_GAME: 'SET_WON_GAME',
+  NEW_GAME: 'NEW_GAME',
 };
 
 export default ActionTypes;

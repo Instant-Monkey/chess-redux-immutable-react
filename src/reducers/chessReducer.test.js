@@ -4,9 +4,10 @@ import {
   setWonGame,
   selectPiece,
   unselectPiece,
+  newGame,
 } from '../actions/actions';
 import chessReducer from './chessReducer';
-import { initialState } from '../store/state';
+import initialState from '../store/state';
 import { Map, List } from 'immutable';
 import { Players, ChessPiecesTypes } from '../helpers/constants';
 
@@ -244,6 +245,24 @@ describe('chessReducer', () => {
         turn: Players.WHITE,
         won: true,
       });
+    });
+  });
+  describe('setWonGame', () => {
+    it('should change the won property in the state', () => {
+      const action = newGame();
+      const pseudoInitialState = Map({
+        turn: Players.WHITE,
+        won: true,
+        pieces: Map({
+          KING: Map({
+            team: Players.BLACK,
+            type: ChessPiecesTypes.KING,
+            position: List([1, 9]),
+          }),
+        }),
+      });
+      const actual = chessReducer(pseudoInitialState, action);
+      expect(actual.toJS()).toEqual(initialState.toJS());
     });
   });
 });

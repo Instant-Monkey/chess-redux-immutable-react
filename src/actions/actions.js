@@ -38,3 +38,10 @@ export function setWonGame() {
     payload: {},
   };
 }
+
+export function newGame() {
+  return {
+    type: ActionTypes.NEW_GAME,
+    payload: {},
+  };
+}

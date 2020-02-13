@@ -1,4 +1,4 @@
-import { initialState } from '../store/state';
+import initialState from '../store/state';
 import ActionTypes from '../actions/types';
 import { List } from 'immutable';
 import { getOppositeTeam } from '../helpers/helpers';
@@ -40,6 +40,9 @@ function chessReducer(state = initialState, action) {
     }
     case ActionTypes.SET_WON_GAME: {
       return state.set('won', true);
+    }
+    case ActionTypes.NEW_GAME: {
+      return initialState;
     }
     default: {
       return state;
