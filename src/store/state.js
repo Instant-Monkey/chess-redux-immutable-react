@@ -1,7 +1,7 @@
 import { Map, List } from 'immutable';
 import { Players, ChessPiecesTypes } from '../helpers/constants';
 
-export const initialState = Map({
+const initialState = Map({
   turn: Players.WHITE,
   won: false,
   selectedPiece: '',
@@ -185,3 +185,5 @@ export const initialState = Map({
     }),
   }),
 });
+
+export default initialState;
