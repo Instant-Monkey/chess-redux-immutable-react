@@ -1,23 +1,10 @@
 import { List } from 'immutable';
 import { Players } from '../helpers/constants';
-
-// General Helpers
-export function getPieceIdOnSquareByPosition(state, position) {
-  return state
-    .get('pieces')
-    .findKey(piece => piece.get('position').equals(position));
-}
-
-export function getPieceOnSquareById(state, id) {
-  return state.getIn(['pieces', id]);
-}
-
-export function getPieceOnSquareByPosition(state, position) {
-  return getPieceOnSquareById(
-    state,
-    getPieceIdOnSquareByPosition(state, position)
-  );
-}
+import {
+  getPieceOnSquareById,
+  getPieceOnSquareByPosition,
+} from '../reducers/selectors';
+// general helpers
 
 export function areTwoPiecesTheSameTeam(piece1, piece2) {
   return piece1.get('team') === piece2.get('team');
