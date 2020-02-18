@@ -5,6 +5,7 @@ import {
   selectPiece,
   unselectPiece,
   newGame,
+  capturePiece,
 } from '../actions/actions';
 import chessReducer from './chessReducer';
 import initialState from '../store/state';
@@ -45,7 +46,7 @@ describe('chessReducer', () => {
   });
   describe('movePiece', () => {
     it('should change the position of the queen', () => {
-      const action = movePiece({ id: 'QUEEN', x: 4, y: 2 });
+      const action = movePiece({ id: 'QUEEN', i: 4, j: 2 });
       const pseudoInitialState = Map({
         turn: Players.WHITE,
         won: false,
@@ -71,7 +72,7 @@ describe('chessReducer', () => {
       });
     });
     it('should change the first move property to false', () => {
-      const action = movePiece({ id: 'QUEEN', x: 4, y: 2 });
+      const action = movePiece({ id: 'QUEEN', i: 4, j: 2 });
       const pseudoInitialState = Map({
         turn: Players.WHITE,
         won: false,
@@ -110,7 +111,7 @@ describe('chessReducer', () => {
     });
 
     it('should change solely the position of the asked piece', () => {
-      const action = movePiece({ id: 'QUEEN', x: 4, y: 2 });
+      const action = movePiece({ id: 'QUEEN', i: 4, j: 2 });
       const pseudoInitialState = Map({
         turn: Players.WHITE,
         won: false,
@@ -146,7 +147,7 @@ describe('chessReducer', () => {
       });
     });
     it('should not change anything if the id is not found', () => {
-      const action = movePiece({ id: 'QUEEN', x: 4, y: 2 });
+      const action = movePiece({ id: 'QUEEN', i: 4, j: 2 });
       const pseudoInitialState = Map({
         turn: Players.WHITE,
         won: false,
@@ -171,33 +172,23 @@ describe('chessReducer', () => {
         },
       });
     });
-    it('should capture a piece if moved upon', () => {
-      const action = movePiece({ id: 'QUEEN', x: 4, y: 2 });
-      const pseudoInitialState = Map({
-        turn: Players.WHITE,
-        won: false,
-        pieces: Map({
-          QUEEN: Map({
-            team: Players.BLACK,
-            type: ChessPiecesTypes.QUEEN,
-            position: List([7, 0]),
-          }),
-          BISHOP: Map({
-            team: Players.WHITE,
-            type: ChessPiecesTypes.BISHOP,
-            position: List([4, 2]),
-          }),
-        }),
-      });
-      const actual = chessReducer(pseudoInitialState, action);
+  });
+
+  describe('capturePiece', () => {
+    it('should delete the piece from pieces and add it to capturedPiece', () => {
+      const action = capturePiece('BLACK_ROOK1');
+      const actual = chessReducer(initialState, action);
+      const stateWithoutPiece = initialState.deleteIn([
+        'pieces',
+        'BLACK_ROOK1',
+      ]);
       expect(actual.toJS()).toEqual({
-        turn: Players.WHITE,
-        won: false,
-        pieces: {
-          QUEEN: {
+        ...stateWithoutPiece.toJS(),
+        capturedPieces: {
+          BLACK_ROOK1: {
             team: Players.BLACK,
-            type: ChessPiecesTypes.QUEEN,
-            position: [4, 2],
+            type: ChessPiecesTypes.ROOK,
+            position: [7, 0],
           },
         },
       });

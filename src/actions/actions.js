@@ -1,13 +1,20 @@
 import ActionTypes from './types';
 
-export function movePiece({ id, x, y }) {
+export function movePiece({ id, i, j }) {
   return {
     type: ActionTypes.MOVE_PIECE,
     payload: {
       id,
-      x,
-      y,
+      i,
+      j,
     },
+  };
+}
+
+export function capturePiece(id) {
+  return {
+    type: ActionTypes.CAPTURE_PIECE,
+    payload: id,
   };
 }
 

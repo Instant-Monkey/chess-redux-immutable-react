@@ -2,27 +2,28 @@ import initialState from '../store/state';
 import ActionTypes from '../actions/types';
 import { List } from 'immutable';
 import { getOppositeTeam } from '../helpers/helpers';
-import { getPieceIdOnSquareByPosition } from '../chess-rules/chessRulesHelpers';
 import { getLegalMovesForAPiece } from '../chess-rules/chessRules';
 
 function chessReducer(state = initialState, action) {
   switch (action.type) {
     case ActionTypes.MOVE_PIECE: {
-      const { id, x, y } = action.payload;
-      const position = List([x, y]);
+      const { id, i, j } = action.payload;
+      const position = List([i, j]);
       if (state.getIn(['pieces', id])) {
-        const nextState = state
+        return state
           .setIn(['pieces', id, 'position'], position)
           .updateIn(['pieces', id, 'firstMove'], firstMove =>
             firstMove ? false : undefined
           );
-        const capturedPieceId = getPieceIdOnSquareByPosition(state, position);
-        if (capturedPieceId) {
-          return nextState.deleteIn(['pieces', capturedPieceId]);
-        }
-        return nextState;
       }
       return state;
+    }
+    case ActionTypes.CAPTURE_PIECE: {
+      const id = action.payload;
+      const piece = state.getIn(['pieces', id]);
+      return state
+        .deleteIn(['pieces', id])
+        .setIn(['capturedPieces', id], piece);
     }
     case ActionTypes.SELECT_PIECE: {
       return state

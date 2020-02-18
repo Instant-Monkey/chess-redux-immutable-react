@@ -1,5 +1,4 @@
 import {
-  getPieceOnSquareById,
   getDirectionLegalMoves,
   getPawnCaptureMoves,
   getVerticalLegalMoves,
@@ -7,6 +6,7 @@ import {
   getDiagonalLegalMoves,
   getKnightLegalMoves,
 } from './chessRulesHelpers';
+import { getPieceOnSquareById } from '../reducers/selectors';
 import { List } from 'immutable';
 import { ChessPiecesTypes, Players } from '../helpers/constants';
 import chessReducer from '../reducers/chessReducer';
@@ -21,8 +21,8 @@ export function getLegalMovesForAPiece(state, pieceId) {
   return getStandardMovesForAPiece(state, pieceId).filterNot(standardMove => {
     const action = movePiece({
       id: pieceId,
-      x: standardMove.get(0),
-      y: standardMove.get(1),
+      i: standardMove.get(0),
+      j: standardMove.get(1),
     });
     const nextState = chessReducer(state, action);
 
@@ -120,8 +120,8 @@ export function isKingCheckedMate(state, team) {
     getStandardMovesForAPiece(state, id).find(legalMove => {
       const action = movePiece({
         id,
-        x: legalMove.get(0),
-        y: legalMove.get(1),
+        i: legalMove.get(0),
+        j: legalMove.get(1),
       });
       const nextState = chessReducer(state, action);
 

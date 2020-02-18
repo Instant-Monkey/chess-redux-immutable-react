@@ -6,6 +6,7 @@ const initialState = Map({
   won: false,
   selectedPiece: '',
   currentLegalMoves: List([]),
+  capturedPieces: Map({}),
   pieces: Map({
     BLACK_ROOK1: Map({
       team: Players.BLACK,
