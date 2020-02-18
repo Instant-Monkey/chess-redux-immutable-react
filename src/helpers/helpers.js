@@ -1,4 +1,4 @@
-import { Players } from './constants';
+import { Players, ChessIcons } from './constants';
 
 export function sortListByPosition(list) {
   return list.sort((a, b) => {
@@ -19,4 +19,12 @@ export function getOppositeTeam(team) {
   }
 
   return Players.WHITE;
+}
+
+export function getPieceUnicode(piece) {
+  if (!piece) {
+    return null;
+  }
+  const icon = ChessIcons[`${piece.get('team')}_${piece.get('type')}`];
+  return icon || null;
 }
