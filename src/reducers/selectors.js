@@ -31,3 +31,7 @@ export function getCurrentLegalMoves(state) {
 export function isPositionOnLegalMoves(state, position) {
   return getCurrentLegalMoves(state).includes(position);
 }
+
+export function getCapturedPieces(state) {
+  return state.get('capturedPieces');
+}

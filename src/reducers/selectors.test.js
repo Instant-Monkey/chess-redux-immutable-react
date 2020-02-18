@@ -7,8 +7,10 @@ import {
   getSelectedPiece,
   getCurrentLegalMoves,
   isPositionOnLegalMoves,
+  getCapturedPieces,
 } from './selectors';
 import { Players, ChessPiecesTypes } from '../helpers/constants';
+import CapturedPieces from '../components/CapturedPieces';
 
 describe('getPieceIdOnSquareByPosition', () => {
   it('should return the piece from a position', () => {
@@ -223,5 +225,22 @@ describe('isPositionOnLegalMoves', () => {
     });
     const actual = isPositionOnLegalMoves(pseudoInitialState, List([2, 1]));
     expect(actual).toBeFalsy();
+  });
+});
+
+describe('getCapturedPieces', () => {
+  it('should return the current capturedPieces of the state', () => {
+    const capturedPieces = Map({
+      BLACK_ROOK1: Map({
+        team: Players.BLACK,
+        type: ChessPiecesTypes.ROOK,
+        position: List([7, 0]),
+      }),
+    });
+    const pseudoInitialState = Map({
+      capturedPieces: capturedPieces,
+    });
+    const actual = getCapturedPieces(pseudoInitialState);
+    expect(actual.toJS()).toEqual(capturedPieces.toJS());
   });
 });
