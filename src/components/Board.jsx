@@ -5,7 +5,7 @@ import { List } from 'immutable';
 
 const useStyles = createUseStyles({
   root: {
-    height: 650,
+    height: '100%',
     width: 650,
   },
   boardRow: {
