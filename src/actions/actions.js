@@ -52,3 +52,10 @@ export function newGame() {
     payload: {},
   };
 }
+
+export function promotePiece(id) {
+  return {
+    type: ActionTypes.PROMOTE_PIECE,
+    payload: id,
+  };
+}

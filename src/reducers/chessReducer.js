@@ -3,6 +3,7 @@ import ActionTypes from '../actions/types';
 import { List } from 'immutable';
 import { getOppositeTeam } from '../helpers/helpers';
 import { getLegalMovesForAPiece } from '../chess-rules/chessRules';
+import { ChessPiecesTypes } from '../helpers/constants';
 
 function chessReducer(state = initialState, action) {
   switch (action.type) {
@@ -44,6 +45,15 @@ function chessReducer(state = initialState, action) {
     }
     case ActionTypes.NEW_GAME: {
       return initialState;
+    }
+    case ActionTypes.PROMOTE_PIECE: {
+      const id = action.payload;
+      const piece = state.getIn(['pieces', id]);
+      if (!piece) {
+        return state;
+      }
+
+      return state.setIn(['pieces', id, 'type'], ChessPiecesTypes.QUEEN);
     }
     default: {
       return state;

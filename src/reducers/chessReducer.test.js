@@ -6,6 +6,7 @@ import {
   unselectPiece,
   newGame,
   capturePiece,
+  promotePiece,
 } from '../actions/actions';
 import chessReducer from './chessReducer';
 import initialState from '../store/state';
@@ -254,6 +255,47 @@ describe('chessReducer', () => {
       });
       const actual = chessReducer(pseudoInitialState, action);
       expect(actual.toJS()).toEqual(initialState.toJS());
+    });
+  });
+  describe('promotePiece', () => {
+    it('should change nothing is the id is unknown', () => {
+      const action = promotePiece('BAD_ID');
+      const pseudoInitialState = Map({
+        turn: Players.WHITE,
+        won: false,
+        pieces: Map({
+          PAWN: Map({
+            team: Players.WHITE,
+            type: ChessPiecesTypes.PAWN,
+            position: List([6, 0]),
+          }),
+        }),
+      });
+      const actual = chessReducer(pseudoInitialState, action);
+      expect(actual.toJS()).toEqual(pseudoInitialState.toJS());
+    });
+
+    it('should made a pawn a queen', () => {
+      const action = promotePiece('PAWN');
+      const pseudoInitialState = Map({
+        pieces: Map({
+          PAWN: Map({
+            team: Players.WHITE,
+            type: ChessPiecesTypes.PAWN,
+            position: List([7, 0]),
+          }),
+        }),
+      });
+      const actual = chessReducer(pseudoInitialState, action);
+      expect(actual.toJS()).toEqual({
+        pieces: {
+          PAWN: {
+            team: Players.WHITE,
+            type: ChessPiecesTypes.QUEEN,
+            position: [7, 0],
+          },
+        },
+      });
     });
   });
 });

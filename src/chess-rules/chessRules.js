@@ -145,3 +145,23 @@ export function isKingCheckedMate(state, team) {
     })
   );
 }
+
+export function isAPromotion(state, pieceId) {
+  const piece = getPieceOnSquareById(state, pieceId);
+  if (!piece || piece.get('type') !== ChessPiecesTypes.PAWN) {
+    return false;
+  }
+  if (
+    piece.get('team') === Players.WHITE &&
+    piece.getIn(['position', 0]) === 7
+  ) {
+    return true;
+  }
+  if (
+    piece.get('team') === Players.BLACK &&
+    piece.getIn(['position', 0]) === 0
+  ) {
+    return true;
+  }
+  return false;
+}

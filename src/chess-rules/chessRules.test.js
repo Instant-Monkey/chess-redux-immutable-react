@@ -5,6 +5,7 @@ import {
   getLegalMovesForAPiece,
   isKingChecked,
   isKingCheckedMate,
+  isAPromotion,
 } from './chessRules';
 import { sortListByPosition } from '../helpers/helpers';
 
@@ -1082,5 +1083,127 @@ describe('isKingCheckedMate', () => {
 
     const actual = isKingCheckedMate(pseudoInitialState, Players.BLACK);
     expect(actual).toBeTruthy();
+  });
+});
+
+describe('isAPromotion', () => {
+  it('should be a promotion for a bad id', () => {
+    const pseudoInitialState = Map({
+      turn: Players.WHITE,
+      won: false,
+      pieces: Map({
+        PAWN: Map({
+          team: Players.WHITE,
+          type: ChessPiecesTypes.PAWN,
+          position: List([7, 3]),
+          firstMove: false,
+        }),
+      }),
+    });
+
+    const actual = isAPromotion(pseudoInitialState, 'BAD_ID');
+    expect(actual).toBeFalsy();
+  });
+  it('should be a promotion for a white pawn on row 7', () => {
+    const pseudoInitialState = Map({
+      turn: Players.WHITE,
+      won: false,
+      pieces: Map({
+        PAWN: Map({
+          team: Players.WHITE,
+          type: ChessPiecesTypes.PAWN,
+          position: List([7, 3]),
+          firstMove: false,
+        }),
+      }),
+    });
+
+    const actual = isAPromotion(pseudoInitialState, 'PAWN');
+    expect(actual).toBeTruthy();
+  });
+  it('should be a promotion for a black pawn on row 0', () => {
+    const pseudoInitialState = Map({
+      turn: Players.WHITE,
+      won: false,
+      pieces: Map({
+        PAWN: Map({
+          team: Players.BLACK,
+          type: ChessPiecesTypes.PAWN,
+          position: List([0, 3]),
+          firstMove: false,
+        }),
+      }),
+    });
+
+    const actual = isAPromotion(pseudoInitialState, 'PAWN');
+    expect(actual).toBeTruthy();
+  });
+  it('should not be a promotion for a black pawn on row 4', () => {
+    const pseudoInitialState = Map({
+      turn: Players.WHITE,
+      won: false,
+      pieces: Map({
+        PAWN: Map({
+          team: Players.BLACK,
+          type: ChessPiecesTypes.PAWN,
+          position: List([4, 3]),
+          firstMove: false,
+        }),
+      }),
+    });
+
+    const actual = isAPromotion(pseudoInitialState, 'PAWN');
+    expect(actual).toBeFalsy();
+  });
+  it('should not be a promotion for a black pawn on row 7', () => {
+    const pseudoInitialState = Map({
+      turn: Players.WHITE,
+      won: false,
+      pieces: Map({
+        PAWN: Map({
+          team: Players.BLACK,
+          type: ChessPiecesTypes.PAWN,
+          position: List([7, 3]),
+          firstMove: false,
+        }),
+      }),
+    });
+
+    const actual = isAPromotion(pseudoInitialState, 'PAWN');
+    expect(actual).toBeFalsy();
+  });
+  it('should not be a promotion for a white pawn on row 0', () => {
+    const pseudoInitialState = Map({
+      turn: Players.WHITE,
+      won: false,
+      pieces: Map({
+        PAWN: Map({
+          team: Players.WHITE,
+          type: ChessPiecesTypes.PAWN,
+          position: List([0, 3]),
+          firstMove: false,
+        }),
+      }),
+    });
+
+    const actual = isAPromotion(pseudoInitialState, 'PAWN');
+    expect(actual).toBeFalsy();
+  });
+  it('should not be a promotion for a non pawn on whatever row', () => {
+    const pseudoInitialState = Map({
+      turn: Players.WHITE,
+      won: false,
+      pieces: Map({
+        PAWN: Map({
+          team: Players.WHITE,
+          type: ChessPiecesTypes.BISHOP,
+          position: List([7, 3]),
+          firstMove: false,
+        }),
+      }),
+    });
+
+    const actual = isAPromotion(pseudoInitialState, 'PAWN');
+    expect(actual).toBeFalsy();
   });
 });
