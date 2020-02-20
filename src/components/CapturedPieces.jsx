@@ -29,7 +29,7 @@ function CapturedPieces({ team }) {
     <div className={classes.root}>
       {teamCapturedPieces &&
         teamCapturedPieces.map(piece => (
-          <div className={classes.capturedPiece}>
+          <div className={classes.capturedPiece} key={piece[0]}>
             {getPieceUnicode(piece[1])}
           </div>
         ))}
