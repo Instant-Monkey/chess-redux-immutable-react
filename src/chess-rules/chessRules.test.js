@@ -141,6 +141,198 @@ describe('getLegalMovesForAPiece', () => {
     const expected = List([List([4, 4])]);
     expect(sortListByPosition(actual).toJS()).toEqual(expected.toJS());
   });
+  it('should prevent the king to capture if it will exposes him', () => {
+    const pseudoInitialState = Map({
+      turn: 'BLACK',
+      won: false,
+      selectedPiece: '',
+      currentLegalMoves: [],
+      capturedPieces: Map({
+        BLACK_PAWN6: Map({
+          team: 'BLACK',
+          type: 'PAWN',
+          position: List([6, 5]),
+          firstMove: true,
+        }),
+      }),
+      pieces: Map({
+        WHITE_ROOK1: Map({
+          team: 'WHITE',
+          type: 'ROOK',
+          position: List([0, 0]),
+        }),
+        WHITE_ROOK2: Map({
+          team: 'WHITE',
+          type: 'ROOK',
+          position: List([0, 7]),
+        }),
+        BLACK_KNIGHT1: Map({
+          team: 'BLACK',
+          type: 'KNIGHT',
+          position: List([5, 0]),
+        }),
+        BLACK_KNIGHT2: Map({
+          team: 'BLACK',
+          type: 'KNIGHT',
+          position: List([5, 7]),
+        }),
+        BLACK_PAWN1: Map({
+          team: 'BLACK',
+          type: 'PAWN',
+          position: List([6, 0]),
+          firstMove: true,
+        }),
+        BLACK_PAWN2: Map({
+          team: 'BLACK',
+          type: 'PAWN',
+          position: List([6, 1]),
+          firstMove: true,
+        }),
+        BLACK_QUEEN: Map({
+          team: 'BLACK',
+          type: 'QUEEN',
+          position: List([7, 3]),
+        }),
+        BLACK_PAWN3: Map({
+          team: 'BLACK',
+          type: 'PAWN',
+          position: List([6, 2]),
+          firstMove: true,
+        }),
+        BLACK_PAWN4: Map({
+          team: 'BLACK',
+          type: 'PAWN',
+          position: List([6, 3]),
+          firstMove: true,
+        }),
+        BLACK_PAWN5: Map({
+          team: 'BLACK',
+          type: 'PAWN',
+          position: List([4, 4]),
+          firstMove: false,
+        }),
+        WHITE_KING: Map({
+          team: 'WHITE',
+          type: 'KING',
+          position: List([0, 4]),
+        }),
+        WHITE_KNIGHT1: Map({
+          team: 'WHITE',
+          type: 'KNIGHT',
+          position: List([0, 1]),
+        }),
+        BLACK_PAWN7: Map({
+          team: 'BLACK',
+          type: 'PAWN',
+          position: List([6, 6]),
+          firstMove: true,
+        }),
+        WHITE_KNIGHT2: Map({
+          team: 'WHITE',
+          type: 'KNIGHT',
+          position: List([0, 6]),
+        }),
+        BLACK_PAWN8: Map({
+          team: 'BLACK',
+          type: 'PAWN',
+          position: List([6, 7]),
+          firstMove: true,
+        }),
+        WHITE_PAWN1: Map({
+          team: 'WHITE',
+          type: 'PAWN',
+          position: List([1, 0]),
+          firstMove: true,
+        }),
+        WHITE_PAWN2: Map({
+          team: 'WHITE',
+          type: 'PAWN',
+          position: List([1, 1]),
+          firstMove: true,
+        }),
+        WHITE_QUEEN: Map({
+          team: 'WHITE',
+          type: 'QUEEN',
+          position: List([6, 5]),
+        }),
+        BLACK_BISHOP1: Map({
+          team: 'BLACK',
+          type: 'BISHOP',
+          position: List([7, 2]),
+        }),
+        WHITE_PAWN3: Map({
+          team: 'WHITE',
+          type: 'PAWN',
+          position: List([1, 2]),
+          firstMove: true,
+        }),
+        BLACK_BISHOP2: Map({
+          team: 'BLACK',
+          type: 'BISHOP',
+          position: List([7, 5]),
+        }),
+        WHITE_PAWN4: Map({
+          team: 'WHITE',
+          type: 'PAWN',
+          position: List([1, 3]),
+          firstMove: true,
+        }),
+        WHITE_PAWN5: Map({
+          team: 'WHITE',
+          type: 'PAWN',
+          position: List([3, 4]),
+          firstMove: false,
+        }),
+        BLACK_KING: Map({
+          team: 'BLACK',
+          type: 'KING',
+          position: List([7, 4]),
+        }),
+        WHITE_PAWN6: Map({
+          team: 'WHITE',
+          type: 'PAWN',
+          position: List([1, 5]),
+          firstMove: true,
+        }),
+        BLACK_ROOK1: Map({
+          team: 'BLACK',
+          type: 'ROOK',
+          position: List([7, 0]),
+        }),
+        WHITE_PAWN7: Map({
+          team: 'WHITE',
+          type: 'PAWN',
+          position: List([1, 6]),
+          firstMove: true,
+        }),
+        BLACK_ROOK2: Map({
+          team: 'BLACK',
+          type: 'ROOK',
+          position: List([7, 7]),
+        }),
+        WHITE_PAWN8: Map({
+          team: 'WHITE',
+          type: 'PAWN',
+          position: List([1, 7]),
+          firstMove: true,
+        }),
+        WHITE_BISHOP1: Map({
+          team: 'WHITE',
+          type: 'BISHOP',
+          position: List([0, 2]),
+        }),
+        WHITE_BISHOP2: Map({
+          team: 'WHITE',
+          type: 'BISHOP',
+          position: List([3, 2]),
+        }),
+      }),
+    });
+
+    const actual = getLegalMovesForAPiece(pseudoInitialState, 'BLACK_KING');
+    const expected = List([]);
+    expect(sortListByPosition(actual).toJS()).toEqual(expected.toJS());
+  });
 });
 
 describe('getStandardMovesForAPiece', () => {
@@ -699,5 +891,196 @@ describe('isKingCheckedMate', () => {
 
     const actual = isKingCheckedMate(pseudoInitialState, Players.WHITE);
     expect(actual).toBeFalsy();
+  });
+  it('should be checkedMate in a scholars mate situation', () => {
+    const pseudoInitialState = Map({
+      turn: 'BLACK',
+      won: false,
+      selectedPiece: '',
+      currentLegalMoves: [],
+      capturedPieces: Map({
+        BLACK_PAWN6: Map({
+          team: 'BLACK',
+          type: 'PAWN',
+          position: List([6, 5]),
+          firstMove: true,
+        }),
+      }),
+      pieces: Map({
+        WHITE_ROOK1: Map({
+          team: 'WHITE',
+          type: 'ROOK',
+          position: List([0, 0]),
+        }),
+        WHITE_ROOK2: Map({
+          team: 'WHITE',
+          type: 'ROOK',
+          position: List([0, 7]),
+        }),
+        BLACK_KNIGHT1: Map({
+          team: 'BLACK',
+          type: 'KNIGHT',
+          position: List([5, 0]),
+        }),
+        BLACK_KNIGHT2: Map({
+          team: 'BLACK',
+          type: 'KNIGHT',
+          position: List([7, 6]),
+        }),
+        BLACK_PAWN1: Map({
+          team: 'BLACK',
+          type: 'PAWN',
+          position: List([6, 0]),
+          firstMove: true,
+        }),
+        BLACK_PAWN2: Map({
+          team: 'BLACK',
+          type: 'PAWN',
+          position: List([6, 1]),
+          firstMove: true,
+        }),
+        BLACK_QUEEN: Map({
+          team: 'BLACK',
+          type: 'QUEEN',
+          position: List([7, 3]),
+        }),
+        BLACK_PAWN3: Map({
+          team: 'BLACK',
+          type: 'PAWN',
+          position: List([6, 2]),
+          firstMove: true,
+        }),
+        BLACK_PAWN4: Map({
+          team: 'BLACK',
+          type: 'PAWN',
+          position: List([6, 3]),
+          firstMove: true,
+        }),
+        BLACK_PAWN5: Map({
+          team: 'BLACK',
+          type: 'PAWN',
+          position: List([4, 4]),
+          firstMove: false,
+        }),
+        WHITE_KING: Map({
+          team: 'WHITE',
+          type: 'KING',
+          position: List([0, 4]),
+        }),
+        WHITE_KNIGHT1: Map({
+          team: 'WHITE',
+          type: 'KNIGHT',
+          position: List([0, 1]),
+        }),
+        BLACK_PAWN7: Map({
+          team: 'BLACK',
+          type: 'PAWN',
+          position: List([6, 6]),
+          firstMove: true,
+        }),
+        WHITE_KNIGHT2: Map({
+          team: 'WHITE',
+          type: 'KNIGHT',
+          position: List([0, 6]),
+        }),
+        BLACK_PAWN8: Map({
+          team: 'BLACK',
+          type: 'PAWN',
+          position: List([6, 7]),
+          firstMove: true,
+        }),
+        WHITE_PAWN1: Map({
+          team: 'WHITE',
+          type: 'PAWN',
+          position: List([1, 0]),
+          firstMove: true,
+        }),
+        WHITE_PAWN2: Map({
+          team: 'WHITE',
+          type: 'PAWN',
+          position: List([1, 1]),
+          firstMove: true,
+        }),
+        WHITE_QUEEN: Map({
+          team: 'WHITE',
+          type: 'QUEEN',
+          position: List([6, 5]),
+        }),
+        BLACK_BISHOP1: Map({
+          team: 'BLACK',
+          type: 'BISHOP',
+          position: List([7, 2]),
+        }),
+        WHITE_PAWN3: Map({
+          team: 'WHITE',
+          type: 'PAWN',
+          position: List([1, 2]),
+          firstMove: true,
+        }),
+        BLACK_BISHOP2: Map({
+          team: 'BLACK',
+          type: 'BISHOP',
+          position: List([7, 5]),
+        }),
+        WHITE_PAWN4: Map({
+          team: 'WHITE',
+          type: 'PAWN',
+          position: List([1, 3]),
+          firstMove: true,
+        }),
+        WHITE_PAWN5: Map({
+          team: 'WHITE',
+          type: 'PAWN',
+          position: List([3, 4]),
+          firstMove: false,
+        }),
+        BLACK_KING: Map({
+          team: 'BLACK',
+          type: 'KING',
+          position: List([7, 4]),
+        }),
+        WHITE_PAWN6: Map({
+          team: 'WHITE',
+          type: 'PAWN',
+          position: List([1, 5]),
+          firstMove: true,
+        }),
+        BLACK_ROOK1: Map({
+          team: 'BLACK',
+          type: 'ROOK',
+          position: List([7, 0]),
+        }),
+        WHITE_PAWN7: Map({
+          team: 'WHITE',
+          type: 'PAWN',
+          position: List([1, 6]),
+          firstMove: true,
+        }),
+        BLACK_ROOK2: Map({
+          team: 'BLACK',
+          type: 'ROOK',
+          position: List([7, 7]),
+        }),
+        WHITE_PAWN8: Map({
+          team: 'WHITE',
+          type: 'PAWN',
+          position: List([1, 7]),
+          firstMove: true,
+        }),
+        WHITE_BISHOP1: Map({
+          team: 'WHITE',
+          type: 'BISHOP',
+          position: List([0, 2]),
+        }),
+        WHITE_BISHOP2: Map({
+          team: 'WHITE',
+          type: 'BISHOP',
+          position: List([3, 2]),
+        }),
+      }),
+    });
+
+    const actual = isKingCheckedMate(pseudoInitialState, Players.BLACK);
+    expect(actual).toBeTruthy();
   });
 });

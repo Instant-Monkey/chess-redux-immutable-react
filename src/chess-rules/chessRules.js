@@ -6,12 +6,27 @@ import {
   getDiagonalLegalMoves,
   getKnightLegalMoves,
 } from './chessRulesHelpers';
-import { getPieceOnSquareById } from '../reducers/selectors';
+import {
+  getPieceOnSquareById,
+  getPieceIdOnSquareByPosition,
+} from '../reducers/selectors';
 import { List } from 'immutable';
 import { ChessPiecesTypes, Players } from '../helpers/constants';
 import chessReducer from '../reducers/chessReducer';
-import { movePiece } from '../actions/actions';
+import { movePiece, capturePiece } from '../actions/actions';
 
+export function getNextState(state, action) {
+  let nextState = chessReducer(state, action);
+  const capturedPiece = getPieceIdOnSquareByPosition(
+    state,
+    List([action.payload.i, action.payload.j])
+  );
+  if (capturedPiece) {
+    nextState = chessReducer(nextState, capturePiece(capturedPiece));
+  }
+
+  return nextState;
+}
 // return the possible moves for a piece
 export function getLegalMovesForAPiece(state, pieceId) {
   const piece = getPieceOnSquareById(state, pieceId);
@@ -19,13 +34,14 @@ export function getLegalMovesForAPiece(state, pieceId) {
     return List([]);
   }
   return getStandardMovesForAPiece(state, pieceId).filterNot(standardMove => {
+    const i = standardMove.get(0);
+    const j = standardMove.get(1);
     const action = movePiece({
       id: pieceId,
-      i: standardMove.get(0),
-      j: standardMove.get(1),
+      i,
+      j,
     });
-    const nextState = chessReducer(state, action);
-
+    const nextState = getNextState(state, action);
     return isKingChecked(nextState, piece.get('team'));
   });
 }
@@ -123,7 +139,7 @@ export function isKingCheckedMate(state, team) {
         i: legalMove.get(0),
         j: legalMove.get(1),
       });
-      const nextState = chessReducer(state, action);
+      const nextState = getNextState(state, action);
 
       return !isKingChecked(nextState, team);
     })
