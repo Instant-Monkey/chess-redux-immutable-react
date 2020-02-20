@@ -8,6 +8,7 @@ import {
   getCurrentLegalMoves,
   isPositionOnLegalMoves,
   getCapturedPieces,
+  getWon,
 } from './selectors';
 import { Players, ChessPiecesTypes } from '../helpers/constants';
 import CapturedPieces from '../components/CapturedPieces';
@@ -242,5 +243,15 @@ describe('getCapturedPieces', () => {
     });
     const actual = getCapturedPieces(pseudoInitialState);
     expect(actual.toJS()).toEqual(capturedPieces.toJS());
+  });
+});
+
+describe('getWon', () => {
+  it('should return the current capturedPieces of the state', () => {
+    const pseudoInitialState = Map({
+      won: true,
+    });
+    const actual = getWon(pseudoInitialState);
+    expect(actual).toBeTruthy();
   });
 });

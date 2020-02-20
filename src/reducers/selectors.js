@@ -20,6 +20,10 @@ export function getTurn(state) {
   return state.get('turn');
 }
 
+export function getWon(state) {
+  return state.get('won');
+}
+
 export function getSelectedPiece(state) {
   return state.get('selectedPiece');
 }
